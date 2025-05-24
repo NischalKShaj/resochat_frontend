@@ -2,20 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.__toast {
+  position: relative;
+  overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Default fallback color (optional) */
+.__toast-default::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #3b82f6;
+  animation: toast-progress linear forwards;
+  animation-duration: 3s;
+}
+
+.__toast-success::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #22c55e; /* Green */
+  animation: toast-progress linear forwards;
+  animation-duration: 3s;
+}
+
+.__toast-error::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background-color: #ef4444; /* Red */
+  animation: toast-progress linear forwards;
+  animation-duration: 3s;
+}
+
+@keyframes toast-progress {
+  from {
+    width: 100%;
   }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  to {
+    width: 0%;
+  }
 }
