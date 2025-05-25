@@ -9,6 +9,7 @@ import axiosInstance from "@/lib/axios/axiosInterceptor";
 import { LoginType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -21,25 +22,50 @@ const LoginComponent = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Validate form fields
       if (formData.email === "" || formData.password === "") {
         toast.error("Please fill all the fields");
         return;
       }
 
+      // Attempt login
       const response = await axiosInstance.post("/user/login", formData);
       if (response.status === 200) {
+        // Store the token in localStorage
+        if (response.data.token) {
+          localStorage.setItem("access_token", response.data.token);
+        }
         toast.success("Login successful");
         router.push("/chat");
       }
-    } catch (error) {
-      toast.error("Invalid credentials");
+    } catch (error: unknown) {
+      // The axios interceptor enhances the error with a message property
+      if (error && typeof error === "object" && "message" in error) {
+        // This will catch the enhanced error from our axios interceptor
+        toast.error(error.message as string);
+      } else if (error instanceof AxiosError) {
+        // Fallback for AxiosError if somehow our interceptor didn't enhance it
+        if (error.response?.data) {
+          const errorMessage =
+            error.response.data?.message ||
+            (typeof error.response.data === "string"
+              ? error.response.data
+              : "Invalid credentials");
+          toast.error(errorMessage);
+        } else {
+          toast.error("Login failed. Please try again.");
+        }
+      } else {
+        // Handle non-Axios errors
+        toast.error("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
   return (
     <div className="w-full flex justify-center items-center">
       <div className="w-full p-6 bg-white">
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div>
             <label
               htmlFor="email"
@@ -100,7 +126,7 @@ const LoginComponent = () => {
             </Link>
           </div>
           <button
-            onClick={handleSubmit}
+            type="submit"
             className="w-full py-2 text-white font-medium rounded-md bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all"
           >
             Sign In
