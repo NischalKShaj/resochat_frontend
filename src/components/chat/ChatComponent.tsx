@@ -43,6 +43,7 @@ import {
   Settings,
 } from "lucide-react";
 import ChatSideBar from "../sidebar/ChatSideBar";
+import ChatMiddlePannel from "../sidebar/ ChatMiddlePannel";
 
 export const ChatComponent = () => {
   // Mock states for UI display
@@ -196,120 +197,7 @@ export const ChatComponent = () => {
     >
       <ChatSideBar />
       {/* Sidebar - User List */}
-      <div
-        className={`${
-          isMobile ? "hidden" : "block"
-        }w-92 border-r bg-white dark:bg-gray-800`}
-      >
-        {/* User List Header */}
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
-              RésoChat
-            </h2>
-
-            <div className="flex gap-1">
-              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-                <Settings className="h-5 w-5" />
-              </button>
-              <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
-                <Plus className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
-            <input
-              type="search"
-              placeholder="Search conversations..."
-              className="w-full pl-8 pr-4 py-2 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-            />
-          </div>
-        </div>
-
-        {/* User List Tabs */}
-        {/* <div className="p-4 pt-2">
-          <div className="flex border-b w-full py-2 bg-gray-300 rounded-md">
-            <button className="flex-1 mx-2 py-2 px-4 bg-gray-100 rounded-md dark:bg-gray-700 font-medium">
-              <div className="flex items-center justify-center">
-                <MessageCircle className="h-4 w-4 mr-2" />
-                Chats
-              </div>
-            </button>
-            <button className="flex-1 py-2 px-4 rounded-md">
-              <div className="flex mx-2 items-center justify-center">
-                <User className="h-4 w-4 mr-2" />
-                Contacts
-              </div>
-            </button>
-            <button className="flex-1 py-2 px-4 rounded-md">
-              <div className="flex mx-2 items-center justify-center">
-                <Sparkles className="h-4 w-4 mr-2" />
-                Discover
-              </div>
-            </button>
-            <button className="flex-1 py-2 px-4 rounded-md">
-              <div className="flex mx-2 items-center justify-center">
-                <Users className="h-4 w-4 mr-2" />
-                Group
-              </div>
-            </button>
-          </div>
-        </div> */}
-
-        {/* User List */}
-        <div className="overflow-y-auto h-[calc(100vh-180px)]">
-          {mockUsers.map((user) => (
-            <div
-              key={user.id}
-              className={`flex items-center gap-3 p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                user.id === selectedUser.id
-                  ? "bg-blue-50 dark:bg-blue-900/20"
-                  : ""
-              }`}
-            >
-              <div className="relative">
-                <div className="h-12 w-12 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-                {user.status === "online" && (
-                  <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full border-2 border-white dark:border-gray-800 bg-green-500"></div>
-                )}
-                {user.hasStory && (
-                  <div className="absolute -inset-0.5 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 -z-10"></div>
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <div className="font-medium truncate">{user.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {user.lastMessageTime}
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="text-sm text-gray-500 dark:text-gray-400 truncate">
-                    {user.isTyping ? (
-                      <span className="text-green-500">Typing...</span>
-                    ) : (
-                      user.lastMessage
-                    )}
-                  </div>
-                  {user.unreadCount > 0 && (
-                    <div className="ml-2 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {user.unreadCount}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+      <ChatMiddlePannel />
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col relative">
         {/* Chat Header */}

@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
     // Only add token for non-public endpoints
     if (!isPublicEndpoint) {
       // Get token from localStorage
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       if (token) {
         // Add token to Authorization header
         config.headers.Authorization = `Bearer ${token}`;

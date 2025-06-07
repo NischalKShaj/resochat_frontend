@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { EyeOff, Eye } from "lucide-react";
 import axiosInstance from "@/lib/axios/axiosInterceptor";
+import { userStore } from "@/store/userStore";
 import { LoginType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -18,6 +19,7 @@ const LoginComponent = () => {
     email: "",
     password: "",
   });
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +37,7 @@ const LoginComponent = () => {
         if (response.data.token) {
           localStorage.setItem("access_token", response.data.token);
         }
+        isLoggedIn(response.data.user);
         toast.success("Login successful");
         router.push("/chat");
       }

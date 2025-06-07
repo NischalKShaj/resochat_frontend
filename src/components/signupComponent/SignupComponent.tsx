@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // file to create login page
 
 // importing the required modules
 "use client";
-import Link from "next/link";
+// import Link from "next/link";
 import React, { useState } from "react";
 import { EyeOff, Eye } from "lucide-react";
 import { SignupType } from "@/types/types";
@@ -10,6 +12,7 @@ import axiosInstance from "@/lib/axios/axiosInterceptor";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import signupSchema from "@/lib/validation/signupValidation";
+import { userStore } from "@/store/userStore";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -22,6 +25,7 @@ const LoginComponent = () => {
   });
   const router = useRouter();
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const isLoggedIn = userStore((state) => state.isLoggedIn);
 
   // for handling the form data
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,6 +138,7 @@ const LoginComponent = () => {
           localStorage.setItem("access_token", response.data.token);
         }
         toast.success("Signup successful");
+        isLoggedIn(response.data.user);
         router.push("/chat");
       }
     } catch (error: any) {
