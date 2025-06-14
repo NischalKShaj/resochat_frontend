@@ -11,6 +11,7 @@ import { LoginType } from "@/types/types";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { connectSocket } from "@/lib/socket/notification";
 
 const LoginComponent = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -39,6 +40,7 @@ const LoginComponent = () => {
         }
         isLoggedIn(response.data.user);
         toast.success("Login successful");
+        connectSocket();
         router.push("/chat");
       }
     } catch (error: unknown) {

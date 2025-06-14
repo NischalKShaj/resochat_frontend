@@ -17,6 +17,7 @@ import axiosInstance from "@/lib/axios/axiosInterceptor";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { userStore } from "@/store/userStore";
+import { disconnectSocket } from "@/lib/socket/notification";
 
 const ChatSideBar = () => {
   const setSelectedTrigger = useTriggerStore((state) => state.setTrigger);
@@ -32,6 +33,7 @@ const ChatSideBar = () => {
         localStorage.removeItem("access_token");
         isLoggedOut();
         toast.success("Logout successfull");
+        disconnectSocket();
         router.push("/");
       }
     } catch (error) {

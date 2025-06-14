@@ -7,6 +7,7 @@ import { userStore } from "@/store/userStore";
 import { Search } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import socket from "@/lib/socket/notification";
 
 interface SearchUser {
   _id: string;
@@ -44,13 +45,18 @@ const Discover = () => {
   // function for the adding new friend
   const handleAddFriend = async (userId: string) => {
     try {
+      console.log("Current user ID:", loggedInUser?._id);
+      console.log("Sending friend request to user ID:", userId);
+
       const response = await axiosInstance.post(
         `/user/add-friend/${userId}/${loggedInUser?._id}`
       );
+
       if (response.status === 202) {
         if (response.data.success === false) {
           toast.error(response.data.message);
         } else {
+          console.log("Friend request sent successfully");
           toast.success(response.data.message);
           setSentRequests((prev) => [...prev, userId]);
         }
