@@ -13,6 +13,7 @@ export const connectSocket = () => {
   if (!socket) {
     console.log("🔌 Initializing socket connection...");
 
+    // The userId is correctly sent here!
     socket = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}/notifications`, {
       transports: ["websocket"],
       reconnection: true,
@@ -27,21 +28,30 @@ export const connectSocket = () => {
 
     // Type guard to ensure socket is not null
     const setupSocketListeners = (s: Socket) => {
-      s.on("receive-friend-request", 
-        (data: { message: string; recipientId: string }) => {
+      // MODIFIED: Align the listener payload with the backend's emission
+      s.on(
+        "receive-friend-request",
+        (data: {
+          from: string;
+          to: string;
+          message: string;
+          timestamp: string;
+        }) => {
           console.log("🎯 Friend request received:", data);
-          
+
           // Get current user from the store
           const currentUser = userStore.getState().user;
           console.log("👤 Current user ID:", currentUser?._id);
-          console.log("🎯 Intended recipient ID:", data.recipientId);
+          console.log("🎯 Intended recipient ID from event:", data.to);
 
-          // Only show the toast if the current user is the intended recipient
-          if (currentUser && currentUser._id === data.recipientId) {
-            console.log("✅ Showing toast to recipient");
+          // MODIFIED: Check against the `data.to` field from the backend
+          if (currentUser && currentUser._id === data.to) {
+            console.log("✅ Showing toast to the correct recipient");
             toast.success(data.message);
           } else {
-            console.log("❌ Not showing toast - user is not the intended recipient");
+            console.log(
+              "❌ Not showing toast - user is not the intended recipient"
+            );
           }
         }
       );
@@ -49,7 +59,7 @@ export const connectSocket = () => {
 
     socket.on("connect", () => {
       console.log("✅ Socket connected with ID:", socket?.id);
-      
+
       // Set up all socket listeners
       if (socket) {
         setupSocketListeners(socket);
