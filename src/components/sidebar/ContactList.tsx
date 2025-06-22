@@ -2,7 +2,7 @@
 
 // importing the required modules
 "use client";
-import axiosInstance from "@/lib/axios/axiosInterceptor";
+// import axiosInstance from "@/lib/axios/axiosInterceptor";
 import { Search } from "lucide-react";
 import React from "react";
 

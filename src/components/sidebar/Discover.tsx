@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // file to show the searched users
 
 // importing the required modules
@@ -7,7 +8,7 @@ import { userStore } from "@/store/userStore";
 import { Search } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import socket from "@/lib/socket/notification";
+// import socket from "@/lib/socket/notification";
 
 interface SearchUser {
   _id: string;
@@ -27,6 +28,7 @@ const Discover = () => {
     try {
       const response = await axiosInstance.get(`/user/search/${searchTerm}`);
       if (response.status === 200) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const formattedSearchResults = response.data.data.map((user: any) => {
           return {
             _id: user._id,

@@ -38,6 +38,7 @@ const ChatSideBar = () => {
       }
     } catch (error) {
       toast.error("Logout failed");
+      console.error(error);
     }
   };
 
